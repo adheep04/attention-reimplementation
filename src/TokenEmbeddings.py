@@ -2,7 +2,7 @@ import torch
 
 from torch import nn
 
-class InputEmbeddings(nn.Module):
+class TokenEmbeddings(nn.Module):
     def __init__(self, d_model, vocab_size):
         super().__init__()
         
