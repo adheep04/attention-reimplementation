@@ -14,17 +14,17 @@ class PositionalEncoding(nn.Module):
         pe = torch.zeros(seq_len, d_model)
 
         # 1d vector of (seq_len, 1) representing position of word in sentence
-        pos = torch.arrange(0, seq_len, dtype=torch.float).unsqueeze(1)
+        pos = torch.arange(0, seq_len, dtype=torch.float).unsqueeze(1)
         
         # term to multiply by pos and run through sin/cos value for pe(n, i)
-        div_term = torch.exp(torch.arrange(0, d_model, 2).float()*(-torch.log(10000.0)/d_model))
+        div_term = torch.exp(torch.arange(0, d_model, 2).float()*(-torch.log(10000.0)/d_model))
         
         # apply positional values
         pe[:,0::2] = torch.sin(pos * div_term)
         pe[:,1::2] = torch.cos(pos * div_term)
         
         # "batchify" from [seq_len,d_model] -> [1,seq_len,d_model]
-        pe.unsqueeze(0)
+        pe = pe.unsqueeze(0)
         
         # saves tensor as a file
         self.register_buffer('pe', pe)

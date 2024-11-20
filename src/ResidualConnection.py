@@ -12,9 +12,9 @@ class ResidualConnection(nn.Module):
         
         # original paper passes x through the sublayer before normalizing it
         # but most implementations do it the other way around as below
-        sublayer_processed = self.dropout(sublayer(self.norm(x)))
+        processed = self.dropout(sublayer(self.norm(x)))
         
         # raw input is combined with input that is processed
-        residual_connection = x + sublayer_processed
+        residual_connection = x + processed
         
         return residual_connection

@@ -14,7 +14,11 @@ class LayerNormalization(nn.Module):
     
     def forward(self, x):
         mean = torch.mean(x, dim=-1, keepdim=True)
-        std = torch.mean(x, dim=-1, keepdim=True)
+        
+        # torch.std can produce NaNs if variance is zero. 
+        # This may happen in edge cases like identical input vectors
+        std = torch.sqrt(torch.var(x, dim=-1, keepdim=True) + self.eps)
+
         
         return (
             self.alpha * 

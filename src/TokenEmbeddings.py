@@ -17,4 +17,4 @@ class TokenEmbeddings(nn.Module):
     # x: 1d tensor representing input tokens ->
     # returns [vocab_size, d_model] tensor 
     def forward(self, x):
-        return self.embedding(x) * torch.sqrt(self.d_model)
+        return self.embedding(x) * float(torch.sqrt(self.d_model))

@@ -21,17 +21,17 @@ class Transformer(nn.Module):
         self.proj_layer = proj_layer
         
     def encode(self, x, enc_mask):
-        x = self.pos_enc(self.in_embed(x))
+        x = self.in_pos_enc(self.in_embed(x))
         return self.encoder(x, enc_mask)
         
     
     def decode(self, y, encoder_output, enc_mask, dec_mask):
-        y = self.pos_enc(self.out_embed(y))
-        y = self.decode(y, encoder_output, enc_mask, dec_mask)
+        y = self.out_pos_enc(self.out_embed(y))
+        y = self.decoder(y, encoder_output, enc_mask, dec_mask)
         return y
          
-    def project(self, x):
-        return self.proj_layer(x)
+    def project(self, x, apply_softmax=False):
+        return self.proj_layer(x, apply_softmax)
     
 
 def build_transformer(in_vocab_size, out_vocab_size, in_seq_len, out_seq_len, d_model=512, N=6, h=8, dropout=0.1, d_ff=2048):

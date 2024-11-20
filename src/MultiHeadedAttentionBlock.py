@@ -3,7 +3,7 @@ from torch import nn
 
 class MultiHeadedAttentionBlock(nn.Module):
     def __init__(self, d_model, h, dropout):
-        super.__init__()
+        super().__init__()
         self.d_model = d_model
         
         # number of heads that Q, K, and V will be split into
@@ -74,7 +74,12 @@ class MultiHeadedAttentionBlock(nn.Module):
         
         # applies dropout regularization
         if dropout is not None:
-            heads = dropout(heads)
+            # Concatenate all heads along the last dimension
+            # since dropout() can only take a tensor not a list
+            concatenated_heads = torch.cat(heads, dim=-1)  # Combine tensors into one
+        
+            # Apply dropout to the concatenated tensor
+            concatenated_heads = dropout(concatenated_heads)
             
         # returns a concatenation of the h heads
         # Q, K, V: (batch, seq, d_model) -> (batch, h, seq, d_model/h) -> (batch, seq, d_model)
